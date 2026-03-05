@@ -1,1 +1,1 @@
-New book-my-show app
+New book-my-show app project
