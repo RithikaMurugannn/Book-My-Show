@@ -92,4 +92,5 @@ Check Jenkins console logs.""",
     always {
         echo "Pipeline finished."
     }
+ }
 }
