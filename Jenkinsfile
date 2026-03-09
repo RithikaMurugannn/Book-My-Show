@@ -53,7 +53,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 bms'
+                sh 'docker run -d --name bms-container -p 3000:3000 rithika17/bms'
             }
         }
 
