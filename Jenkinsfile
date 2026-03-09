@@ -32,11 +32,11 @@ pipeline {
                 dir('bookmyshow-app') {
                     withSonarQubeEnv('sonar-server') {
                         script {
-                          sh """
-                          ${tool 'sonar-scanner'}/bin/sonar-scanner \
-                          -Dsonar.projectKey=BMS \
-                          -Dsonar.sources=.
-                          """
+                            sh """
+                            ${tool 'sonar-scanner'}/bin/sonar-scanner \
+                            -Dsonar.projectKey=BMS \
+                            -Dsonar.sources=.
+                            """
                         }
                     }
                 }
@@ -57,16 +57,14 @@ pipeline {
             }
         }
 
-       
-
-    }
+    } 
 
     post {
-
         success {
-            emailext(
-                subject: "Jenkins Build SUCCESS",
-                body: """
+            script {
+                emailext(
+                    subject: "Jenkins Build SUCCESS",
+                    body: """
 Pipeline executed successfully.
 
 Project: BMS
@@ -75,14 +73,16 @@ Job: ${env.JOB_NAME}
 
 Application deployed successfully.
 """,
-                to: "rithikamurugan181@gmail.com"
-            )
+                    to: "rithikamurugan181@gmail.com"
+                )
+            }
         }
 
         failure {
-            emailext(
-                subject: "Jenkins Build FAILED",
-                body: """
+            script {
+                emailext(
+                    subject: "Jenkins Build FAILED",
+                    body: """
 Pipeline execution FAILED.
 
 Project: BMS
@@ -91,12 +91,13 @@ Job: ${env.JOB_NAME}
 
 Check Jenkins console logs.
 """,
-                to: "rithikamurugan181@gmail.com"
-            )
+                    to: "rithikamurugan181@gmail.com"
+                )
+            }
         }
 
         always {
             echo "Pipeline finished."
         }
-    }
-}
+    } 
+} 
