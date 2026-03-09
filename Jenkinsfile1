@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('Checkout Code') {
+        stage('Checkout from git') {
             steps {
                 git branch: 'bms-update', url: 'https://github.com/RithikaMurugannn/Book-My-Show.git'
             }
