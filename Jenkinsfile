@@ -53,6 +53,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
+                sh 'docker rm -f bms || true'
                 sh 'docker run -d --name bms -p 3000:3000 rithika17/bms'
             }
         }
@@ -60,44 +61,35 @@ pipeline {
     } 
 
     post {
-        success {
-            script {
-                emailext(
-                    subject: "Jenkins Build SUCCESS",
-                    body: """
-Pipeline executed successfully.
+    success {
+        emailext(
+            subject: "Jenkins Build SUCCESS",
+            body: """Pipeline executed successfully.
 
 Project: BMS
 Build Number: ${env.BUILD_NUMBER}
 Job: ${env.JOB_NAME}
 
-Application deployed successfully.
-""",
-                    to: "rithikamurugan181@gmail.com"
-                )
-            }
-        }
+Application deployed successfully.""",
+            to: "rithikamurugan181@gmail.com"
+        )
+    }
 
-        failure {
-            script {
-                emailext(
-                    subject: "Jenkins Build FAILED",
-                    body: """
-Pipeline execution FAILED.
+    failure {
+        emailext(
+            subject: "Jenkins Build FAILED",
+            body: """Pipeline execution FAILED.
 
 Project: BMS
 Build Number: ${env.BUILD_NUMBER}
 Job: ${env.JOB_NAME}
 
-Check Jenkins console logs.
-""",
-                    to: "rithikamurugan181@gmail.com"
-                )
-            }
-        }
+Check Jenkins console logs.""",
+            to: "rithikamurugan181@gmail.com"
+        )
+    }
 
-        always {
-            echo "Pipeline finished."
-        }
-    } 
-} 
+    always {
+        echo "Pipeline finished."
+    }
+}
