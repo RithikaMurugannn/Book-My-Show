@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'nodejs'
+        nodejs 'node18'
     }
 
     stages {
@@ -15,7 +15,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'feature-branch', url: 'https://github.com/RithikaMurugannn/Book-My-Show.git'
+                git branch: 'bms-update', url: 'https://github.com/RithikaMurugannn/Book-My-Show.git'
             }
         }
 
@@ -30,11 +30,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('bookmyshow-app') {
-                    withSonarQubeEnv('sonarqube') {
+                    withSonarQubeEnv('sonar-server') {
                         script {
                           sh """
                           ${tool 'sonar-scanner'}/bin/sonar-scanner \
-                          -Dsonar.projectKey=bms \
+                          -Dsonar.projectKey=BMS \
                           -Dsonar.sources=.
                           """
                         }
@@ -46,14 +46,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('bookmyshow-app') {
-                    sh 'docker build -t bookmyshow-app .'
+                    sh 'docker build -t bms:latest .'
                 }
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 bookmyshow-app'
+                sh 'docker run -d -p 3000:3000 bms'
             }
         }
 
@@ -69,7 +69,7 @@ pipeline {
                 body: """
 Pipeline executed successfully.
 
-Project: BookMyShow
+Project: BMS
 Build Number: ${env.BUILD_NUMBER}
 Job: ${env.JOB_NAME}
 
@@ -85,7 +85,7 @@ Application deployed successfully.
                 body: """
 Pipeline execution FAILED.
 
-Project: BookMyShow
+Project: BMS
 Build Number: ${env.BUILD_NUMBER}
 Job: ${env.JOB_NAME}
 
