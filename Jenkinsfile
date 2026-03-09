@@ -63,7 +63,7 @@ pipeline {
     post {
     success {
         emailext(
-            subject: "Jenkins Build SUCCESS",
+            subject: " SUCCESS",
             body: """Pipeline executed successfully.
 
 Project: BMS
